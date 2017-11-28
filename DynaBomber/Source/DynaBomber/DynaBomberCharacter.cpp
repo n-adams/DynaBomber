@@ -40,9 +40,35 @@ ADynaBomberCharacter::ADynaBomberCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	m_bIsCharMoving = false;
+	m_characterMoveDir = CHARDIR_COUNT;
 }
 
 void ADynaBomberCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+
+	if (m_bIsCharMoving)
+	{
+		// move in desired direction
+		switch (m_characterMoveDir)
+		{
+		case CHARDIR_NORTH:	GetCharacterMovement()->AddImpulse(FVector(200.0f, 0.0f, 0.0f), true);	break;
+		case CHARDIR_SOUTH:	GetCharacterMovement()->AddImpulse(FVector(-200.0f, 0.0f, 0.0f), true);	break;
+		case CHARDIR_EAST:	GetCharacterMovement()->AddImpulse(FVector(0.0f, 200.0f, 0.0f), true);	break;
+		case CHARDIR_WEST:	GetCharacterMovement()->AddImpulse(FVector(0.0f, -200.0f, 0.0f), true);	break;
+		case CHARDIR_COUNT:	m_bIsCharMoving = false;												break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		if (CHARDIR_COUNT != m_characterMoveDir)
+		{
+			// start moving
+			m_bIsCharMoving = true;
+		}
+	}
 }

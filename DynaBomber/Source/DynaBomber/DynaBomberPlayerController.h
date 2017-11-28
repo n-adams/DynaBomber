@@ -19,6 +19,28 @@ protected:
 	virtual void PlayerTick(float DeltaTime) override;
 	virtual void SetupInputComponent() override;
 	// End PlayerController interface
+
+	void OnDirectionNorthPressed();
+	void OnDirectionNorthReleased();
+
+	void OnDirectionSouthPressed();
+	void OnDirectionSouthReleased();
+
+	void OnDirectionEastPressed();
+	void OnDirectionEastReleased();
+
+	void OnDirectionWestPressed();
+	void OnDirectionWestReleased();
+
+	void OnDirectionReleased();
+
+	void OnDropBombPressed();
+
+private:
+	bool m_bNorthPressed : 1;
+	bool m_bSouthPressed : 1;
+	bool m_bEastPressed : 1;
+	bool m_bWestPressed : 1;
 };
 
 
