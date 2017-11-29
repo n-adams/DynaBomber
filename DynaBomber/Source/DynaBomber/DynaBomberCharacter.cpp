@@ -51,16 +51,57 @@ void ADynaBomberCharacter::Tick(float DeltaSeconds)
 
 	if (m_bIsCharMoving)
 	{
+		FRotator desiredRotation(0.0f, 0.0f, 0.0f);
+		FRotator charRot = GetActorRotation();
+
 		// move in desired direction
 		switch (m_characterMoveDir)
 		{
-		case CHARDIR_NORTH:	GetCharacterMovement()->AddImpulse(FVector(200.0f, 0.0f, 0.0f), true);	break;
-		case CHARDIR_SOUTH:	GetCharacterMovement()->AddImpulse(FVector(-200.0f, 0.0f, 0.0f), true);	break;
-		case CHARDIR_EAST:	GetCharacterMovement()->AddImpulse(FVector(0.0f, 200.0f, 0.0f), true);	break;
-		case CHARDIR_WEST:	GetCharacterMovement()->AddImpulse(FVector(0.0f, -200.0f, 0.0f), true);	break;
-		case CHARDIR_COUNT:	m_bIsCharMoving = false;												break;
+		case CHARDIR_NORTH:
+		{
+			GetCharacterMovement()->AddImpulse(FVector(200.0f, 0.0f, 0.0f), true);
+			desiredRotation.Yaw = 0.0f;
+		}break;
+		case CHARDIR_SOUTH:
+		{
+			GetCharacterMovement()->AddImpulse(FVector(-200.0f, 0.0f, 0.0f), true);
+			if (charRot.Yaw < 0.0f)		// rotate the shortest way
+				desiredRotation.Yaw = -180.0f;
+			else
+				desiredRotation.Yaw = 180.0f;
+		}break;
+		case CHARDIR_EAST:
+		{
+			GetCharacterMovement()->AddImpulse(FVector(0.0f, 200.0f, 0.0f), true);
+			if (charRot.Yaw < -100.0f)		// rotate the shortest way
+				desiredRotation.Yaw = -270.0f;
+			else
+				desiredRotation.Yaw = 90.0f;
+		}break;
+		case CHARDIR_WEST:
+		{
+			GetCharacterMovement()->AddImpulse(FVector(0.0f, -200.0f, 0.0f), true);
+			desiredRotation.Yaw = -90.0f;
+		}break;
+		case CHARDIR_COUNT:	
+			m_bIsCharMoving = false;
+			break;
 		default:
 			break;
+		}
+
+		// Rotate towards direction of travel
+		if (m_bIsCharMoving)
+		{
+			if (!FMath::IsNearlyEqual(charRot.Yaw, desiredRotation.Yaw))
+			{
+				float yawDiff = desiredRotation.Yaw - charRot.Yaw;
+				if (yawDiff < 0.0f)
+					desiredRotation.Yaw = charRot.Yaw - (GetCharacterMovement()->RotationRate.Yaw * DeltaSeconds);
+				else
+					desiredRotation.Yaw = charRot.Yaw + (GetCharacterMovement()->RotationRate.Yaw * DeltaSeconds);
+				SetActorRotation(desiredRotation);
+			}
 		}
 	}
 	else
