@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "DynaBomberPlayerController.h"
 #include "DynaBomberGameMode.generated.h"
 
 UCLASS(minimalapi)
@@ -13,6 +14,10 @@ class ADynaBomberGameMode : public AGameModeBase
 
 public:
 	ADynaBomberGameMode();
+
+	virtual void BeginPlay() override;
+
+	ADynaBomberPlayerController* m_player2PC;
 };
 
 

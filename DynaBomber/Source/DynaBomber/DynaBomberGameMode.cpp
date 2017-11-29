@@ -4,6 +4,7 @@
 #include "DynaBomberPlayerController.h"
 #include "DynaBomberCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 ADynaBomberGameMode::ADynaBomberGameMode()
 {
@@ -16,4 +17,13 @@ ADynaBomberGameMode::ADynaBomberGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+	
+}
+
+void ADynaBomberGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	m_player2PC = Cast<ADynaBomberPlayerController>(UGameplayStatics::CreatePlayer(GetWorld(), -1, true));
 }

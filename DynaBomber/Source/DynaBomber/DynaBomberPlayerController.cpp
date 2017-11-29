@@ -21,19 +21,39 @@ void ADynaBomberPlayerController::SetupInputComponent()
 	// set up gameplay key bindings
 	Super::SetupInputComponent();
 
-	InputComponent->BindAction("North", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionNorthPressed);
-	InputComponent->BindAction("North", IE_Released, this, &ADynaBomberPlayerController::OnDirectionNorthReleased);
+	int32 playerID = GetLocalPlayer()->GetControllerId();
+	if (playerID == 0)
+	{
+		InputComponent->BindAction("North", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionNorthPressed);
+		InputComponent->BindAction("North", IE_Released, this, &ADynaBomberPlayerController::OnDirectionNorthReleased);
 
-	InputComponent->BindAction("East", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionEastPressed);
-	InputComponent->BindAction("East", IE_Released, this, &ADynaBomberPlayerController::OnDirectionEastReleased);
+		InputComponent->BindAction("East", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionEastPressed);
+		InputComponent->BindAction("East", IE_Released, this, &ADynaBomberPlayerController::OnDirectionEastReleased);
 
-	InputComponent->BindAction("South", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionSouthPressed);
-	InputComponent->BindAction("South", IE_Released, this, &ADynaBomberPlayerController::OnDirectionSouthReleased);
+		InputComponent->BindAction("South", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionSouthPressed);
+		InputComponent->BindAction("South", IE_Released, this, &ADynaBomberPlayerController::OnDirectionSouthReleased);
 
-	InputComponent->BindAction("West", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionWestPressed);
-	InputComponent->BindAction("West", IE_Released, this, &ADynaBomberPlayerController::OnDirectionWestReleased);
+		InputComponent->BindAction("West", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionWestPressed);
+		InputComponent->BindAction("West", IE_Released, this, &ADynaBomberPlayerController::OnDirectionWestReleased);
 
-	InputComponent->BindAction("DropBomb", IE_Pressed, this, &ADynaBomberPlayerController::OnDropBombPressed);
+		InputComponent->BindAction("DropBomb", IE_Pressed, this, &ADynaBomberPlayerController::OnDropBombPressed);
+	}
+	else if (playerID == 1)
+	{
+		InputComponent->BindAction("NorthP2", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionNorthPressed);
+		InputComponent->BindAction("NorthP2", IE_Released, this, &ADynaBomberPlayerController::OnDirectionNorthReleased);
+
+		InputComponent->BindAction("EastP2", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionEastPressed);
+		InputComponent->BindAction("EastP2", IE_Released, this, &ADynaBomberPlayerController::OnDirectionEastReleased);
+
+		InputComponent->BindAction("SouthP2", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionSouthPressed);
+		InputComponent->BindAction("SouthP2", IE_Released, this, &ADynaBomberPlayerController::OnDirectionSouthReleased);
+
+		InputComponent->BindAction("WestP2", IE_Pressed, this, &ADynaBomberPlayerController::OnDirectionWestPressed);
+		InputComponent->BindAction("WestP2", IE_Released, this, &ADynaBomberPlayerController::OnDirectionWestReleased);
+
+		InputComponent->BindAction("DropBombP2", IE_Pressed, this, &ADynaBomberPlayerController::OnDropBombPressed);
+	}
 }
 
 void ADynaBomberPlayerController::OnDirectionNorthPressed()
