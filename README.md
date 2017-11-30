@@ -5,3 +5,4 @@
 - Created new input method to limit movement to cardinal directions only
 - Finished up movement and rotation code.
 - Added second player and inputs for second player
+- Set camera and map up
