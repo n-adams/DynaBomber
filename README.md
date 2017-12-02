@@ -6,3 +6,6 @@
 - Finished up movement and rotation code.
 - Added second player and inputs for second player
 - Set camera and map up
+- Added basic zoom in/out based on player distance
+- Created and added MapZones, these will be used to place blocks, bombs etc
+- Random generation of which zones are blocks
