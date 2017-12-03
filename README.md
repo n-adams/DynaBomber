@@ -12,4 +12,4 @@
 - Switched MapZones from pure blueprint to code+blueprint
 - Finished basic level setup in editor
 - Added code to create and adjust a dynamic material to change the colour of each player (P1 = Red, P2 = Blue)
-- Star adding gameplay code
+- Started adding gameplay code
