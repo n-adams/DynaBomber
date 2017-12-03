@@ -128,3 +128,19 @@ void ADynaBomberCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AAc
 	ADynaZone* zone = Cast<ADynaZone>(OtherActor);
 	m_lastZoneLeft = zone->boxId;
 }
+
+void ADynaBomberCharacter::DropBomb()
+{
+	// use box ID to get the map zone object
+	for (TObjectIterator<ADynaZone> Itr; Itr; ++Itr)
+	{
+		if (Itr->GetWorld() != GetWorld())
+			continue;
+
+		if (Itr->boxId == m_lastZoneEntered)
+		{
+			// create bomb
+			Itr->CreateBomb(2, 1.5f, m_playerId);
+		}
+	}
+}

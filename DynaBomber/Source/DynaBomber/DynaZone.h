@@ -18,6 +18,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	bool CreateBomb(int32 bombPower, float fuseTime, int32 playerID);
+
+	void DoExplode();
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool isHidden;
 
@@ -33,20 +37,22 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 boxWestId;
 
-//	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-//	TArray<ADynaZone*> neighbouringZones;
+	TArray<int32> zoneIds;
 
-//	UFUNCTION(BlueprintCallable, Category = "ADynaZone")
-//	ADynaZone* GetNorthZone() { return neighbouringZones[0]; }
-//	UFUNCTION(BlueprintCallable, Category = "ADynaZone")
-//	ADynaZone* GetEastZone() { return neighbouringZones[1]; }
-//	UFUNCTION(BlueprintCallable, Category = "ADynaZone")
-//	ADynaZone* GetSouthZone() { return neighbouringZones[2]; }
-//	UFUNCTION(BlueprintCallable, Category = "ADynaZone")
-//	ADynaZone* GetWestZone() { return neighbouringZones[3]; }
+	// bomb event for Blueprint
+	UFUNCTION(BlueprintImplementableEvent, Category = "DynaZone")
+	void CreateBombBP(const int32 bombPower, const float fuseTime, const int32 playerID);
+
+	UFUNCTION(BlueprintCallable, Category = "DynaZone")
+	void ExplodeBomb(const int32 playerID, const int32 power);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "DynaZone")
+	void DoExplodeBP();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	bool bDidExplode : 1;
 
 };

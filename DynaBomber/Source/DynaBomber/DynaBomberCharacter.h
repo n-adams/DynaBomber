@@ -31,6 +31,8 @@ public:
 	void SetCharacterMoveDirection(CHARACTER_DIR direction) { m_characterMoveDir = direction; }
 	void UpdatePlayerMats(int32 playerId);
 
+	void DropBomb();
+
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
 	UFUNCTION()

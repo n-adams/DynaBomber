@@ -13,3 +13,5 @@
 - Finished basic level setup in editor
 - Added code to create and adjust a dynamic material to change the colour of each player (P1 = Red, P2 = Blue)
 - Started adding gameplay code
+- Added a bunch of code and BP script for bomb placement and explosion.
+- Imported explosion asset from starter content.

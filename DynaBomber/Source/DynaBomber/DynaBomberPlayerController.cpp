@@ -126,5 +126,5 @@ void ADynaBomberPlayerController::OnDirectionReleased()
 
 void ADynaBomberPlayerController::OnDropBombPressed()
 {
-
+	m_pMyChar->DropBomb();
 }
