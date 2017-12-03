@@ -1,15 +1,17 @@
 // Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 
 #include "DynaBomberCharacter.h"
-//#include "UObject/ConstructorHelpers.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-//#include "GameFramework/PlayerController.h"
+#include "DynaZone.h"
 
 ADynaBomberCharacter::ADynaBomberCharacter()
 {
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ADynaBomberCharacter::OnOverlapBegin);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ADynaBomberCharacter::OnOverlapEnd);
 
 	// Don't rotate character to camera direction
 	bUseControllerRotationPitch = false;
@@ -28,6 +30,22 @@ ADynaBomberCharacter::ADynaBomberCharacter()
 
 	m_bIsCharMoving = false;
 	m_characterMoveDir = CHARDIR_COUNT;
+	m_playerId = -1;
+	m_lastZoneEntered = -1;
+	m_lastZoneLeft = -1;
+}
+
+void ADynaBomberCharacter::UpdatePlayerMats(int32 playerId)
+{
+	m_playerId = playerId;
+	// change our colour depending on which player we are
+	UMaterialInstanceDynamic* newDynamicInst = UMaterialInstanceDynamic::Create(this->GetMesh()->GetMaterial(0), this);
+	if (m_playerId == 0)
+		newDynamicInst->SetVectorParameterValue("BodyColor", FVector(1.0f, 0.268791f, 0.238941f));
+	else if (m_playerId == 1)
+		newDynamicInst->SetVectorParameterValue("BodyColor", FVector(0.10948f, 0.161475f, 1.0f));
+
+	GetMesh()->SetMaterial(0, newDynamicInst);
 }
 
 void ADynaBomberCharacter::Tick(float DeltaSeconds)
@@ -97,4 +115,16 @@ void ADynaBomberCharacter::Tick(float DeltaSeconds)
 			m_bIsCharMoving = true;
 		}
 	}
+}
+
+void ADynaBomberCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+	ADynaZone* zone = Cast<ADynaZone>(OtherActor);
+	m_lastZoneEntered = zone->boxId;
+}
+
+void ADynaBomberCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	ADynaZone* zone = Cast<ADynaZone>(OtherActor);
+	m_lastZoneLeft = zone->boxId;
 }

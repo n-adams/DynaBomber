@@ -29,9 +29,18 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	void SetCharacterMoveDirection(CHARACTER_DIR direction) { m_characterMoveDir = direction; }
+	void UpdatePlayerMats(int32 playerId);
+
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	UFUNCTION()
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 private:
 	CHARACTER_DIR	m_characterMoveDir;
+	int32			m_playerId;
+	int32			m_lastZoneEntered;
+	int32			m_lastZoneLeft;
 	bool			m_bIsCharMoving : 1;
 };
 

@@ -1,7 +1,6 @@
 // Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 
 #include "DynaBomberPlayerController.h"
-#include "DynaBomberCharacter.h"
 
 ADynaBomberPlayerController::ADynaBomberPlayerController()
 {
@@ -14,6 +13,12 @@ ADynaBomberPlayerController::ADynaBomberPlayerController()
 void ADynaBomberPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
+	if (m_pMyChar == nullptr)
+	{
+		m_pMyChar = Cast<ADynaBomberCharacter>(GetPawn());
+		int32 playerID = GetLocalPlayer()->GetControllerId();
+		m_pMyChar->UpdatePlayerMats(playerID);
+	}
 }
 
 void ADynaBomberPlayerController::SetupInputComponent()
@@ -58,8 +63,7 @@ void ADynaBomberPlayerController::SetupInputComponent()
 
 void ADynaBomberPlayerController::OnDirectionNorthPressed()
 {
-	if (ADynaBomberCharacter* myChar = Cast<ADynaBomberCharacter>(GetPawn()))
-		myChar->SetCharacterMoveDirection(CHARDIR_NORTH);
+	m_pMyChar->SetCharacterMoveDirection(CHARDIR_NORTH);
 	m_bNorthPressed = true;
 }
 
@@ -71,8 +75,7 @@ void ADynaBomberPlayerController::OnDirectionNorthReleased()
 
 void ADynaBomberPlayerController::OnDirectionSouthPressed()
 {
-	if (ADynaBomberCharacter* myChar = Cast<ADynaBomberCharacter>(GetPawn()))
-		myChar->SetCharacterMoveDirection(CHARDIR_SOUTH);
+	m_pMyChar->SetCharacterMoveDirection(CHARDIR_SOUTH);
 	m_bSouthPressed = true;
 }
 
@@ -84,8 +87,7 @@ void ADynaBomberPlayerController::OnDirectionSouthReleased()
 
 void ADynaBomberPlayerController::OnDirectionEastPressed()
 {
-	if (ADynaBomberCharacter* myChar = Cast<ADynaBomberCharacter>(GetPawn()))
-		myChar->SetCharacterMoveDirection(CHARDIR_EAST);
+	m_pMyChar->SetCharacterMoveDirection(CHARDIR_EAST);
 	m_bEastPressed = true;
 }
 
@@ -97,8 +99,7 @@ void ADynaBomberPlayerController::OnDirectionEastReleased()
 
 void ADynaBomberPlayerController::OnDirectionWestPressed()
 {
-	if (ADynaBomberCharacter* myChar = Cast<ADynaBomberCharacter>(GetPawn()))
-		myChar->SetCharacterMoveDirection(CHARDIR_WEST);
+	m_pMyChar->SetCharacterMoveDirection(CHARDIR_WEST);
 	m_bWestPressed = true;
 }
 
@@ -120,8 +121,7 @@ void ADynaBomberPlayerController::OnDirectionReleased()
 	else if (m_bWestPressed)
 		newDir = CHARDIR_WEST;
 
-	if (ADynaBomberCharacter* myChar = Cast<ADynaBomberCharacter>(GetPawn()))
-		myChar->SetCharacterMoveDirection(newDir);
+	m_pMyChar->SetCharacterMoveDirection(newDir);
 }
 
 void ADynaBomberPlayerController::OnDropBombPressed()

@@ -9,3 +9,7 @@
 - Added basic zoom in/out based on player distance
 - Created and added MapZones, these will be used to place blocks, bombs etc
 - Random generation of which zones are blocks
+- Switched MapZones from pure blueprint to code+blueprint
+- Finished basic level setup in editor
+- Added code to create and adjust a dynamic material to change the colour of each player (P1 = Red, P2 = Blue)
+- Star adding gameplay code

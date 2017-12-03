@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "DynaBomberCharacter.h"
 #include "DynaBomberPlayerController.generated.h"
 
 UCLASS()
@@ -37,6 +38,8 @@ protected:
 	void OnDropBombPressed();
 
 private:
+	ADynaBomberCharacter* m_pMyChar;
+
 	bool m_bNorthPressed : 1;
 	bool m_bSouthPressed : 1;
 	bool m_bEastPressed : 1;
