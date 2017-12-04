@@ -36,8 +36,8 @@ public:
 	int32 boxSouthId;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 boxWestId;
-
-	TArray<int32> zoneIds;
+	
+	bool bDidExplode : 1;
 
 	// bomb event for Blueprint
 	UFUNCTION(BlueprintImplementableEvent, Category = "DynaZone")
@@ -53,6 +53,5 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	bool bDidExplode : 1;
 
 };

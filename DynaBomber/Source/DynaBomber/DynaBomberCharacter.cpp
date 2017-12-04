@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DynaZone.h"
+#include "GameFramework/PlayerStart.h"
 
 ADynaBomberCharacter::ADynaBomberCharacter()
 {
@@ -11,7 +12,6 @@ ADynaBomberCharacter::ADynaBomberCharacter()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ADynaBomberCharacter::OnOverlapBegin);
-	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ADynaBomberCharacter::OnOverlapEnd);
 
 	// Don't rotate character to camera direction
 	bUseControllerRotationPitch = false;
@@ -33,6 +33,7 @@ ADynaBomberCharacter::ADynaBomberCharacter()
 	m_playerId = -1;
 	m_lastZoneEntered = -1;
 	m_lastZoneLeft = -1;
+	m_bDead = false;
 }
 
 void ADynaBomberCharacter::UpdatePlayerMats(int32 playerId)
@@ -123,24 +124,31 @@ void ADynaBomberCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, A
 	m_lastZoneEntered = zone->boxId;
 }
 
-void ADynaBomberCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	ADynaZone* zone = Cast<ADynaZone>(OtherActor);
-	m_lastZoneLeft = zone->boxId;
-}
-
 void ADynaBomberCharacter::DropBomb()
 {
 	// use box ID to get the map zone object
 	for (TObjectIterator<ADynaZone> Itr; Itr; ++Itr)
 	{
-		if (Itr->GetWorld() != GetWorld())
-			continue;
-
 		if (Itr->boxId == m_lastZoneEntered)
 		{
 			// create bomb
 			Itr->CreateBomb(2, 1.5f, m_playerId);
 		}
+	}
+}
+
+void ADynaBomberCharacter::CheckExplosion(const int32 boxId)
+{
+	if (boxId == m_lastZoneEntered)
+	{
+		// uh-oh, time to die.
+		m_bDead = true;
+		TArray<FVector> locs;
+		for (TObjectIterator<APlayerStart> Itr; Itr; ++Itr)
+		{
+			locs.Add(Itr->GetTransform().GetLocation());
+		}
+		int32 temp = FMath::RandRange(0, locs.Num() - 1);
+		SetActorLocation(locs[temp]);
 	}
 }
